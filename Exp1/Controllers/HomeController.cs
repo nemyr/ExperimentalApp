@@ -10,34 +10,33 @@ namespace Exp1.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public ViewResult Index()
         {
+            var hour = DateTime.Now.Hour;
+            ViewBag.Greeting = hour < 12 ? "Good morning" : "Good afternoon";
+            return View("MyView");
+        }
+
+        [HttpGet]
+        public ViewResult RsvpForm() {
             return View();
         }
 
-        public IActionResult About()
+        [HttpPost]
+        public ViewResult RsvpForm(GuestResponse guestResponse)
         {
-            ViewData["Message"] = "Your application description page.";
-
+            if (ModelState.IsValid)
+            {
+                Repository.AddResponse(guestResponse);
+                return View("Thanks", guestResponse);
+            }
             return View();
         }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public ViewResult ListResponses() {
+            return View(Repository.Responses.Where(r => r.WillAttend == true));
         }
     }
+
 }
+
