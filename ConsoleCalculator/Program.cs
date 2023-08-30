@@ -28,13 +28,31 @@ Func<int, int, float> GetAction()
     }
 }
 
-Console.WriteLine("Input first digit");
-var a = GetDigit();
+while (true)
+{
+    Console.WriteLine("Input first digit");
+    var a = GetDigit();
 
-Console.WriteLine("Input action");
-var act = GetAction();
+    Console.WriteLine("Input action");
+    var act = GetAction();
 
-Console.WriteLine("Input second digit");
-var b = GetDigit();
+    Console.WriteLine("Input second digit");
+    var b = GetDigit();
 
-Console.WriteLine($"Result: {act(a, b)}");
+    Console.WriteLine($"Result: {act(a, b)}");
+
+    Console.WriteLine("Once more? (y/n)");
+    while (true)
+    {
+        var key = Console.ReadKey();
+        
+        if (key.KeyChar == 'y' || key.KeyChar == 'Y')
+        {
+            Console.Clear();
+            break;
+        }
+
+        if (key.KeyChar == 'n' || key.KeyChar == 'N')
+            return;
+    }
+}
